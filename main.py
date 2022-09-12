@@ -1,4 +1,6 @@
 import os, time
+
+from ip_location.ip_location import get_response_time
 from mcs.contract import ContractAPI
 from mcs.api import McsAPI
 import requests
@@ -6,9 +8,10 @@ import socket
 from dotenv import load_dotenv
 
 load_dotenv()
-web3_api=os.getenv('web3_api')
-wallet_address=os.getenv('wallet_address')
-private_key=os.getenv('private_key')
+web3_api = os.getenv('web3_api')
+wallet_address = os.getenv('wallet_address')
+private_key = os.getenv('private_key')
+
 
 def upload_file_pay(filepath):
     w3_api = ContractAPI(web3_api)
@@ -29,24 +32,14 @@ def upload_file_pay(filepath):
 
 if __name__ == "__main__":
     mcs_url = 'mcs.filswan.com'
-    mcs_ip = socket.gethostbyname(mcs_url)
-    mcs_response_time = requests.get('https://' + mcs_url).elapsed.total_seconds()
-    mcs_url_location = requests.get('https://ipinfo.io/' + mcs_ip)
-    # print(mcs_url, mcs_url_location.json())
-    print(mcs_url, mcs_url_location.json()['city'])
-
     ipfs_io_url = 'ipfs.io'
-    ipfs_io_ip = socket.gethostbyname(ipfs_io_url)
-    ipfs_io_response_time = requests.get('https://' + mcs_url).elapsed.total_seconds()
-
-    ipfs_io_location = requests.get('https://ipinfo.io/' + ipfs_io_ip)
-    print(ipfs_io_url, ipfs_io_location.json()['city'])
-
-    print('ipfs_io_response_time', ipfs_io_response_time)
-    print('mcs_response_time', mcs_response_time)
+    mcs_response_time, mcs_city = get_response_time(mcs_url)
+    ipfs_io_response_time, ipfs_city = get_response_time(ipfs_io_url)
+    print(mcs_url, mcs_city, mcs_response_time)
+    print(ipfs_io_url, ipfs_city, ipfs_io_response_time)
 
     if mcs_response_time < ipfs_io_response_time:
-        print('Chose mcs gateway')
+        print('Chose mcs gateway: Document upload starting....')
         upload_file_pay('/computing/image_classification.ipynb')
     else:
         print('Chose ipfs gateway')
