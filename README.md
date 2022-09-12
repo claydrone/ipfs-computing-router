@@ -1,4 +1,5 @@
 # ipfs-computing-router
+![image](https://user-images.githubusercontent.com/110652123/189560874-094b69f8-ad6c-4012-9931-7d0abdf74d8c.png)
 
 IPFS Computing Router enable user to store and fetch dataset from the closest IPFS node and upload the training result
 to the same node available.
