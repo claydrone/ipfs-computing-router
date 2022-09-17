@@ -17,8 +17,8 @@ def upload_file_pay(filepath):
     w3_api = ContractAPI(web3_api)
     api = McsAPI()
     # upload file to mcs
-    father_path = os.path.abspath(os.path.dirname(__file__))
-    upload_file = api.upload_file(wallet_address, father_path + filepath)
+    parent_path = os.path.abspath(os.path.dirname(__file__))
+    upload_file = api.upload_file(wallet_address, parent_path + filepath)
     file_data = upload_file["data"]
     payload_cid, source_file_upload_id, nft_uri, file_size, w_cid = file_data['payload_cid'], file_data[
         'source_file_upload_id'], file_data['ipfs_url'], file_data['file_size'], file_data['w_cid']
@@ -32,7 +32,7 @@ def upload_file_pay(filepath):
 
 if __name__ == "__main__":
     mcs_url = 'mcs.filswan.com'
-    ipfs_io_url = 'ipfs.io'
+    ipfs_io_url = 'multichain.storage'
     mcs_response_time, mcs_city = get_response_time(mcs_url)
     ipfs_io_response_time, ipfs_city = get_response_time(ipfs_io_url)
     print(mcs_url, mcs_city, mcs_response_time)
