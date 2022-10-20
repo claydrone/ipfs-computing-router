@@ -8,13 +8,13 @@ import socket
 from dotenv import load_dotenv
 
 load_dotenv()
-web3_api = os.getenv('web3_api')
+rpc_endpoint = os.getenv('rpc_endpoint')
 wallet_address = os.getenv('wallet_address')
 private_key = os.getenv('private_key')
 
 
 def upload_file_pay(filepath):
-    w3_api = ContractAPI(web3_api)
+    w3_api = ContractAPI(rpc_endpoint)
     api = McsAPI()
     # upload file to mcs
     parent_path = os.path.abspath(os.path.dirname(__file__))
@@ -32,14 +32,14 @@ def upload_file_pay(filepath):
 
 if __name__ == "__main__":
     mcs_url = 'mcs.filswan.com'
-    ipfs_io_url = 'multichain.storage'
+    multichain_storage_url = 'multichain.storage'
     mcs_response_time, mcs_city = get_response_time(mcs_url)
-    ipfs_io_response_time, ipfs_city = get_response_time(ipfs_io_url)
+    ipfs_io_response_time, ipfs_city = get_response_time(multichain_storage_url)
     print(mcs_url, mcs_city, mcs_response_time)
-    print(ipfs_io_url, ipfs_city, ipfs_io_response_time)
+    print(multichain_storage_url, ipfs_city, ipfs_io_response_time)
 
     if mcs_response_time < ipfs_io_response_time:
-        print('Chose mcs gateway: Document upload starting....')
+        print('Choose mcs gateway: Document upload starting....')
         upload_file_pay('/computing/image_classification.ipynb')
     else:
-        print('Chose ipfs gateway')
+        print('Chose multichain_storage gateway')
