@@ -1,7 +1,7 @@
 from dataset import Dataset
 from file import File
 
-files=File('monkey','../input/bestsellers_with_categories.csv')
-files.upload_file_pay()
+upload_file = File('monkey', '/home/ccao/Downloads/swan_provide_tool_20211006.mov')
+upload_file.stream_upload()
 
-print(Dataset("bestsellers_with_categories",files).title)
+print(Dataset("bestsellers_with_categories", upload_file).title)

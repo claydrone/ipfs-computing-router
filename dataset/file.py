@@ -1,25 +1,32 @@
 import os
 
 from dotenv import load_dotenv
-from mcs.upload.mcs_upload import MCSUpload
+from mcs import McsAPI, ContractAPI
+from mcs.common.params import Params
 
 
 class File:
-    def __init__(self, filename, path):
-        self.filename = filename
-        self.path = path
-
-    def upload_file_pay(self):
+    def __init__(self, filename, file_path):
         load_dotenv("../.env")
-        wallet_address = os.getenv('wallet_address')
-        private_key = os.getenv('private_key')
-        rpc_endpoint = os.getenv('rpc_endpoint')
+        self.filename = filename
+        self.chain_name = "polygon.mainnet"
+        self.wallet_address = os.getenv('wallet_address')
+        self.private_key = os.getenv('private_key')
+        self.rpc_endpoint = os.getenv('rpc_endpoint')
+        self.file_path = file_path
+        self.upload_response = None
+        self.payment_tx_hash = None
+        self.api = McsAPI(Params(self.chain_name).MCS_API)
+        self.api.get_jwt_token(self.wallet_address, self.private_key, self.chain_name)
+        self.w3_api = ContractAPI(self.rpc_endpoint, self.chain_name)
 
-        uploaded_file = MCSUpload("polygon.mainnet", wallet_address, private_key, rpc_endpoint, self.path)
-        uploaded_file.approve_token(1)
-        file_data, need_pay = uploaded_file.stream_upload()
-        print(uploaded_file.upload_response)
-
-        if need_pay:
-            uploaded_file.pay()
-            uploaded_file.mint('a_image')
+    def stream_upload(self):
+        upload_file = self.api.stream_upload_file(self.wallet_address, self.file_path)
+        file_data = upload_file["data"]
+        need_pay = 0
+        if file_data["status"] == "Free":
+            self.upload_response = file_data
+        else:
+            self.upload_response = file_data
+            need_pay = 1
+            return file_data, need_pay

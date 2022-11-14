@@ -2,6 +2,6 @@ pytest==7.1.3
 web3==5.31.1
 requests==2.27.1
 requests_toolbelt==0.10.0
-python-mcs-sdk==0.1.2
+python-mcs-sdk==0.1.5
 python-dotenv
 pyroute2
