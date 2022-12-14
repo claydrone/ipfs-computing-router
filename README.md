@@ -1,7 +1,8 @@
 # ipfs-computing-router
 ![](ipfs_compute_router.png)
-IPFS Computing Router enable user to store and fetch dataset from the closest IPFS node and upload the training result
-to the same node available.
+
+IPFS Computing Router is a CDN that enables users to fetch datasets from the closest SP to computing resources and perform computing jobs. If the data is not found on the SP, it will fetch the data from the closest SP and pay for the retrieval and hosting cost via FEVM contract.
+
 
 ## Installation
 
